@@ -111,11 +111,65 @@ def fractional_knapsack():
     """
 
 def job_scheduling():
-    print_title("Job Scheduling")
 
-    """
-    job_scheduling code
-    """
+    n = int(input("Enter the number of jobs: "))
+
+
+    deadline = list(map(int, input(f"Enter the deadlines for {n} jobs (space-separated): ").split()))
+
+    profit = list(map(int, input(f"Enter the profits for {n} jobs (space-separated): ").split()))
+
+
+    jobs = [(f"J{i+1}", deadline[i], profit[i], i) for i in range(n)]
+
+    print("\nORIGINAL TABLE")
+    print("Job\tDeadline\tProfit")
+    for j in jobs:
+        print(f"{j[0]}\t{j[1]}\t\t{j[2]}")
+
+
+    jobs_sorted = sorted(jobs, key=lambda x: x[2], reverse=True)
+
+    print("\nSORTED BY PROFIT (DESC)")
+    print("Job\tProfit\tDeadline")
+    for j in jobs_sorted:
+        print(f"{j[0]}\t{j[2]}\t{j[1]}")
+
+    # Slot tracker
+    slot = [None] * n
+    total_profit = 0
+    job_count = 0
+
+    # Scheduling
+    for job in jobs_sorted:
+        name, d, p, idx = job
+        for s in range(min(n, d) - 1, -1, -1):
+            if slot[s] is None:
+                slot[s] = job
+                total_profit += p
+                job_count += 1
+                break
+
+    print("\nFINAL SLOTS (Timeline)")
+    print("Time :", end=" ")
+    for i in range(n):
+        print(f"{i}", end="   ")
+    print()
+
+    print("Jobs :", end=" ")
+    for s in slot:
+        if s:
+            print(f"{s[0]}", end=" ")
+        else:
+            print("-", end=" ")
+    print()
+
+    print("\nSelected Jobs (Left to Right Timeline):")
+    selected = [s[0] for s in slot if s]
+    print(selected)
+
+    print("\nJobs Done:", job_count)
+    print("Total Profit:", total_profit)
 
 def print_title(title: str):
     width = 50
