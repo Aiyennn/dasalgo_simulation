@@ -7,7 +7,6 @@ class Node:
 
 # -------------------------------------------Classes must be declared above this line-----------------------------------------------------------
 
-
 # Huffman
 def create_tree(chars, freqs):
     nodes = [Node(c, f) for c, f in zip(chars, freqs)]
@@ -42,16 +41,45 @@ def generate_codes(node, prefix="", codes=None):
 
 # -------------------------------------------Helper functions above this line-------------------------------------------------------------------
 
-def coin_change():
-    print_title("Coin Change")
+def coin_change(): # using dynamic programming -> Vince Evangelista
+    orig_amt  = int(input("Enter the original amount: "))
+    denominations = sorted([int(x) for x in input("Enter coin denominations (split them with spaces): ").strip().split()], reverse=True)
+    i = 0
+    used_coins = {}
 
-    """
-    Coin Change code
+    dp = [float("inf")] * (orig_amt + 1)
+    dp[0] = 0
 
+    choice = [-1] * (orig_amt + 1)
 
+    for amt in range(1, orig_amt + 1):
+        for coin in denominations:
+            if coin <= amt and dp[amt - coin] + 1 < dp[amt]:
+                dp[amt] = dp[amt - coin] + 1
+                choice[amt] = coin
 
+    if dp[orig_amt] == float("inf"):
+        print("No solution possible.")
+        return
 
-    """
+    amt = orig_amt
+    while amt > 0:
+        coin = choice[amt]
+        if coin not in used_coins:
+            used_coins[coin] = 1
+        else:
+            used_coins[coin] += 1
+        amt -= coin
+
+    print()
+    print(f"Total Coins Used: {sum([x for x in used_coins.values()])}")
+    print()
+    print("Breakdown:")
+    print(f"{'COIN':<10} {'COUNT':>5}")
+    print("-" * 17)
+
+    for coin, count in used_coins.items():
+        print(f"{coin:<10} {count:>5}")
 
 def huffman():
     print_title("Huffman")
@@ -78,25 +106,15 @@ def huffman():
 def fractional_knapsack():
     print_title("Fractional Knapsack")
 
-    
     """
     fractional knapsack code
-
-
-
-    
     """
 
 def job_scheduling():
     print_title("Job Scheduling")
 
-    
     """
     job_scheduling code
-
-
-
-    
     """
 
 def print_title(title: str):
@@ -144,10 +162,6 @@ def main():
                 break
             case _:
                 print("Choose value between 1-5")
-
-        
-
-        
 
 if __name__ == "__main__":
     main()
