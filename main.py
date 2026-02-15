@@ -54,8 +54,6 @@ def print_title(title: str):
 
 def main():
 
-    title = "GREEDY ALGORITHMS"
-    width = 50
     algorithms = [
         "Coin Change",
         "Huffman Coding",
